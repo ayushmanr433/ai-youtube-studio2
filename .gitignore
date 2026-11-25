@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.env
+backend/client_secret.json
+backend/token.json
+output/*
+!output/.gitkeep
+assets/audio/*
+!assets/audio/.gitkeep
+assets/images/*
+!assets/images/.gitkeep

@@ -1,0 +1,763 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AYUX STUDIO — AI Creator Workspace</title>
+<meta name="theme-color" content="#090b14">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --bg:#090b14;
+  --sidebar:#0d101b;
+  --panel:#111522;
+  --panel2:#171c2c;
+  --line:#252b40;
+  --text:#f3f4ff;
+  --muted:#929bb5;
+  --purple:#9270ff;
+  --blue:#5e9bff; 
+  --green:#42d6a0;
+  --red:#ff6b82;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse at 70% -20%,#282052 0%,transparent 42%),
+    var(--bg);
+  color:var(--text);
+  font:14px/1.6 Inter,Arial,sans-serif;
+}
+
+button,input,textarea{font:inherit}
+
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+  width:250px;
+  background:rgba(13,16,27,.96);
+  border-right:1px solid var(--line);
+  padding:25px 17px;
+  display:flex;
+  flex-direction:column;
+  flex-shrink:0;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:0 9px 32px;
+}
+
+.logo-icon{
+  width:39px;height:39px;
+  display:grid;place-items:center;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:white;font-size:19px;font-weight:800;
+  box-shadow:0 5px 22px #9270ff45;
+}
+
+.logo-name{font-size:18px;font-weight:800;letter-spacing:.5px}
+.logo-name span{color:var(--purple)}
+.logo small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.5px}
+
+.nav-label{
+  color:#66708c;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.6px;
+  padding:12px 12px 9px;
+}
+
+.nav-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 13px;
+  margin:3px 0;
+  background:transparent;
+  color:var(--muted);
+  border:1px solid transparent;
+  border-radius:10px;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.nav-btn:hover{background:var(--panel2);color:white}
+.nav-btn.active{
+  color:white;
+  background:linear-gradient(100deg,#34265c,#20233e);
+  border-color:#58468e;
+}
+.nav-icon{font-size:17px;width:22px;text-align:center}
+
+.sidebar-bottom{margin-top:auto}
+.local-card{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:12px;
+  padding:13px;
+  margin-top:20px;
+}
+.local-card strong{font-size:12px}
+.local-card p{font-size:11px;color:var(--muted);margin:5px 0}
+.dot{
+  display:inline-block;width:7px;height:7px;
+  border-radius:50%;background:var(--green);
+  margin-right:6px;box-shadow:0 0 10px var(--green);
+}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.topbar{
+  height:75px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 34px;
+  background:#0b0e19a8;
+}
+.top-title{font-size:14px;font-weight:650}
+.top-right{display:flex;align-items:center;gap:15px}
+.top-status{color:var(--muted);font-size:12px}
+.avatar{
+  width:35px;height:35px;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,#9270ff,#4d8bff);
+  font-weight:800;
+}
+
+.content{max-width:1500px;margin:auto;padding:32px 35px 60px}
+.page{display:none}
+.page.active{display:block}
+
+.eyebrow{
+  color:var(--purple);font-size:11px;
+  font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;
+}
+.hero{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  gap:20px;margin-bottom:27px;
+}
+.hero h1{font-size:30px;line-height:1.2;margin:8px 0}
+.hero p{color:var(--muted);margin:0;max-width:650px}
+.hero-art{
+  width:130px;height:105px;
+  border-radius:25px;
+  background:linear-gradient(135deg,#30215c,#172c57);
+  border:1px solid #51417d;
+  display:grid;place-items:center;
+  font-size:42px;
+  box-shadow:0 12px 40px #0004;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;margin:25px 0;
+}
+.stat{
+  padding:18px;
+  background:linear-gradient(145deg,#151a2b,#101421);
+  border:1px solid var(--line);
+  border-radius:14px;
+}
+.stat-label{color:var(--muted);font-size:12px}
+.stat-value{font-size:21px;font-weight:800;margin-top:5px}
+.stat-icon{float:right;font-size:20px}
+
+.grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);
+  gap:18px;
+}
+.panel{
+  background:linear-gradient(145deg,#141929,#101421);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:22px;
+  min-width:0;
+  box-shadow:0 15px 45px #0002;
+}
+.panel h2{font-size:17px;margin:0 0 5px}
+.sub{color:var(--muted);font-size:12px;margin:0 0 18px}
+.panel-heading{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:12px;margin-bottom:16px;
+}
+.pill{
+  display:inline-flex;align-items:center;
+  border:1px solid var(--line);
+  padding:4px 9px;border-radius:30px;
+  color:var(--muted);font-size:11px;
+}
+.pill.purple{border-color:#5b4a8d;color:#b9a5ff;background:#30254b55}
+
+/* FORMS */
+label{
+  display:block;font-size:12px;
+  font-weight:650;margin:14px 0 6px;
+  color:#d8dcf0;
+}
+input,textarea{
+  width:100%;border:1px solid var(--line);
+  background:#0b0f1b;color:var(--text);
+  padding:11px 12px;border-radius:9px;
+  outline:none;transition:.2s;
+}
+input:focus,textarea:focus{
+  border-color:var(--purple);
+  box-shadow:0 0 0 3px #9270ff19;
+}
+input::placeholder,textarea::placeholder{color:#626c87}
+textarea{min-height:145px;resize:vertical}
+input:disabled{opacity:.65}
+input[type=file]{font-size:12px}
+
+.row{display:flex;gap:12px}
+.row>*{flex:1;min-width:0}
+
+.btn{
+  border:0;border-radius:9px;
+  padding:11px 16px;
+  background:linear-gradient(110deg,var(--purple),var(--blue));
+  color:white;font-weight:750;
+  cursor:pointer;transition:.2s;
+  margin-top:15px;
+}
+.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:wait;transform:none}
+.btn.secondary{
+  background:#1c2235;
+  border:1px solid var(--line);
+  color:#e7e8f6;
+}
+.btn.full{width:100%}
+
+.result{
+  white-space:pre-wrap;overflow-wrap:anywhere;
+  background:#0a0e19;border:1px solid var(--line);
+  border-radius:10px;padding:14px;
+  min-height:65px;color:#dce2fa;
+  font-size:12px;margin-top:13px;
+}
+.notice{font-size:11px;color:#d9b978;margin-top:13px}
+.success{color:var(--green)}
+a{color:#a99aff}
+.hidden{display:none!important}
+
+.workflow{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 0;border-bottom:1px solid var(--line);
+}
+.workflow:last-child{border:0}
+.workflow-icon{
+  width:37px;height:37px;border-radius:10px;
+  display:grid;place-items:center;
+  background:#282344;font-size:17px;
+}
+.workflow strong{font-size:12px}
+.workflow p{margin:2px 0 0;color:var(--muted);font-size:11px}
+
+.footer{
+  border-top:1px solid var(--line);
+  padding:20px 35px;color:#707b96;font-size:11px;
+}
+
+@media(max-width:950px){
+  .sidebar{width:210px}
+  .content{padding:25px 20px}
+  .topbar{padding:0 20px}
+}
+@media(max-width:720px){
+  .app{display:block}
+  .sidebar{width:100%;padding:12px}
+  .logo{padding:0 8px 10px}
+  .nav-label,.sidebar-bottom{display:none}
+  .sidebar nav{display:flex;gap:5px;overflow-x:auto}
+  .nav-btn{width:auto;white-space:nowrap;padding:9px 12px}
+  .topbar{height:60px}
+  .grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .hero-art{display:none}
+  .hero h1{font-size:25px}
+  .row{flex-direction:column;gap:0}
+  .content{padding:22px 14px}
+  .footer{padding:18px 14px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">A</div>
+    <div>
+      <div class="logo-name">AYUX <span>STUDIO</span></div>
+      <small>AI CREATOR WORKSPACE</small>
+    </div>
+  </div>
+
+  <div class="nav-label">WORKSPACE</div>
+  <nav>
+    <button class="nav-btn active" data-page="dashboard">
+      <span class="nav-icon">⌂</span> Dashboard
+    </button>
+    <button class="nav-btn" data-page="creator">
+      <span class="nav-icon">▶</span> YouTube Manager
+    </button>
+    <button class="nav-btn" data-page="maker">
+      <span class="nav-icon">✦</span> Documentary Maker
+    </button>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="nav-label">SYSTEM</div>
+    <div class="local-card">
+      <strong><span class="dot"></span>Local workspace</strong>
+      <p id="sidehealth">Checking services...</p>
+      <span class="pill purple">PRIVATE · LOCAL</span>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
+<header class="topbar">
+  <div class="top-title" id="topTitle">Dashboard</div>
+  <div class="top-right">
+    <div class="top-status" id="health">Checking local services...</div>
+    <div class="avatar">A</div>
+  </div>
+</header>
+
+<main class="content">
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">YOUR CREATOR WORKSPACE</div>
+      <h1>Create something extraordinary.</h1>
+      <p>Plan documentaries, prepare YouTube videos, generate metadata and render your content — all from one workspace.</p>
+    </div>
+    <div class="hero-art">✦</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-icon">⚡</span>
+      <div class="stat-label">Workspace status</div>
+      <div class="stat-value" id="dashServer">Checking...</div>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">🎬</span>
+      <div class="stat-label">Video output</div>
+      <div class="stat-value">1080p MP4</div>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">▶</span>
+      <div class="stat-label">YouTube account</div>
+      <div class="stat-value" id="dashYoutube">Checking...</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Quick launch</h2>
+        <span class="pill purple">CREATOR TOOLS</span>
+      </div>
+
+      <div class="workflow">
+        <div class="workflow-icon">✦</div>
+        <div><strong>Documentary Maker</strong><p>Turn your script into a scene plan and video.</p></div>
+      </div>
+      <button class="btn full" data-go="maker">Open Documentary Maker →</button>
+
+      <div class="workflow">
+        <div class="workflow-icon">▶</div>
+        <div><strong>YouTube Manager</strong><p>Prepare metadata and upload or schedule videos.</p></div>
+      </div>
+      <button class="btn secondary full" data-go="creator">Open YouTube Manager →</button>
+    </div>
+
+    <div class="panel">
+      <h2>Workflow overview</h2>
+      <p class="sub">Your content creation pipeline</p>
+      <div class="workflow"><div class="workflow-icon">01</div><div><strong>Write your story</strong><p>Prepare your documentary script.</p></div></div>
+      <div class="workflow"><div class="workflow-icon">02</div><div><strong>Build scene plan</strong><p>Organize narration and visual prompts.</p></div></div>
+      <div class="workflow"><div class="workflow-icon">03</div><div><strong>Render your video</strong><p>Combine images and narration into MP4.</p></div></div>
+      <div class="workflow"><div class="workflow-icon">04</div><div><strong>Publish on YouTube</strong><p>Upload or schedule your finished video.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- YOUTUBE MANAGER -->
+<section class="page" id="creator">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">PUBLISHING WORKSPACE</div>
+      <h1>YouTube Manager</h1>
+      <p>Connect your channel, prepare video details and manage your publishing workflow.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Upload & publish</h2>
+        <span class="pill" id="ytstatus">Checking connection</span>
+      </div>
+      <p class="sub">Connect your YouTube account and prepare your video.</p>
+
+      <button class="btn secondary" id="connect">Connect YouTube account</button>
+
+      <label>Video file (MP4 recommended)</label>
+      <input id="video" type="file" accept="video/mp4,video/quicktime,.m4v">
+
+      <label>Video title</label>
+      <input id="title" maxlength="100" placeholder="Enter your documentary title">
+
+      <label>Description</label>
+      <textarea id="description" placeholder="Write your video description..."></textarea>
+
+      <label>Tags (comma separated)</label>
+      <input id="tags" placeholder="history, documentary, Hindi">
+
+      <label>Thumbnail (optional)</label>
+      <input id="thumbnail" type="file" accept="image/*">
+
+      <label>Schedule publishing (optional, include timezone)</label>
+      <input id="publish" placeholder="2026-12-01T18:30:00+05:30">
+
+      <button class="btn full" id="upload">Upload / schedule video</button>
+      <div class="notice">Uploads are private by default. Review your video details and publishing time before uploading.</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>AI Metadata Assistant</h2>
+        <span class="pill purple">AI TOOL</span>
+      </div>
+      <p class="sub">Generate video metadata from your documentary script.</p>
+
+      <label>Documentary script</label>
+      <textarea id="metascript" placeholder="Paste your documentary script here..."></textarea>
+
+      <button class="btn full" id="generate">✦ Generate title & description</button>
+
+      <div style="margin-top:20px">
+        <label>Generation result</label>
+        <div class="result" id="metaresult">Your generated metadata will appear here.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCUMENTARY MAKER -->
+<section class="page" id="maker">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">VIDEO PRODUCTION WORKSPACE</div>
+      <h1>Documentary Maker</h1>
+      <p>Transform your written story into a structured scene plan and rendered video.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Script → Scene Planner</h2>
+        <span class="pill purple">STEP 01</span>
+      </div>
+      <p class="sub">Split your documentary script into visual beats and narration sections.</p>
+
+      <label>Full documentary script</label>
+      <textarea id="script" style="min-height:280px" placeholder="Paste your complete Hindi or English documentary script..."></textarea>
+
+      <div class="row">
+        <div>
+          <label>Target duration (minutes)</label>
+          <input id="minutes" type="number" min="1" max="180" value="20">
+        </div>
+        <div>
+          <label>Output format</label>
+          <input value="1920 × 1080 MP4" disabled>
+        </div>
+      </div>
+
+      <button class="btn full" id="scenes">✦ Create scene plan</button>
+      <div id="sceneinfo" class="sub" style="margin-top:15px"></div>
+      <div id="sceneout" class="result">Your scene plan will appear here.</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Video Renderer</h2>
+        <span class="pill purple">STEP 02</span>
+      </div>
+      <p class="sub">Combine your scene images and narration into a 1080p video.</p>
+
+      <label>Image folder (project-relative)</label>
+      <input id="imagedir" value="assets/images">
+
+      <label>Narration audio file</label>
+      <input id="audiofile" value="assets/audio/narration.mp3">
+
+      <label>Output filename</label>
+      <input id="outfile" value="output/documentary.mp4">
+
+      <button class="btn full" id="render">⚡ Render 1080p video</button>
+
+      <div class="result" id="renderresult">Add images named scene_001.jpg, scene_002.jpg and narration.mp3, then render.</div>
+
+      <div class="notice">
+        Requires FFmpeg. This version uses existing images and one narration track. AI image generation and voice synthesis are not yet integrated.
+      </div>
+
+      <div class="workflow" style="margin-top:22px">
+        <div class="workflow-icon">🎞</div>
+        <div><strong>Video resolution</strong><p>1920 × 1080 Full HD</p></div>
+      </div>
+      <div class="workflow">
+        <div class="workflow-icon">🎧</div>
+        <div><strong>Audio format</strong><p>AAC audio output</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  AYUX STUDIO · AI CREATOR WORKSPACE · LOCAL DEVELOPMENT BUILD
+</footer>
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+async function api(url, opts = {}) {
+  const r = await fetch(url, opts);
+  let d;
+  try { d = await r.json(); }
+  catch { d = {detail: await r.text()}; }
+  if (!r.ok) throw Error(d.detail || "Request failed");
+  return d;
+}
+
+/* NAVIGATION */
+function openPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.page === page));
+  $(page).classList.add("active");
+
+  const names = {
+    dashboard:"Dashboard",
+    creator:"YouTube Manager",
+    maker:"Documentary Maker"
+  };
+  $("topTitle").textContent = names[page] || "AYUX STUDIO";
+}
+
+document.querySelectorAll(".nav-btn").forEach(b => {
+  b.addEventListener("click", () => openPage(b.dataset.page));
+});
+
+document.querySelectorAll("[data-go]").forEach(b => {
+  b.addEventListener("click", () => openPage(b.dataset.go));
+});
+
+/* SERVICE STATUS */
+async function refresh() {
+  try {
+    const h = await api("/api/health");
+    const serverText = h.ffmpeg_available ? "Online · FFmpeg ready" : "Online · FFmpeg missing";
+    $("health").textContent = serverText;
+    $("sidehealth").textContent = serverText;
+    $("dashServer").textContent = "Online";
+
+    const y = await api("/api/youtube/status");
+    const status = y.connected ? "Connected" : "Not connected";
+    $("ytstatus").textContent = status;
+    $("dashYoutube").textContent = status;
+  } catch(e) {
+    $("health").textContent = "Server offline";
+    $("sidehealth").textContent = "Server offline";
+    $("dashServer").textContent = "Offline";
+    $("dashYoutube").textContent = "Unavailable";
+  }
+}
+
+/* YOUTUBE CONNECTION */
+$("connect").onclick = async () => {
+  try {
+    const d = await api("/api/youtube/connect");
+    alert(d.message);
+    refresh();
+  } catch(e) {
+    alert(e.message);
+  }
+};
+
+/* METADATA GENERATION */
+$("generate").onclick = async () => {
+  try {
+    $("generate").disabled = true;
+    $("generate").textContent = "Generating...";
+
+    const d = await api("/api/metadata", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        title:$("title").value,
+        script:$("metascript").value
+      })
+    });
+
+    $("title").value = d.title || "";
+    $("description").value = d.description || "";
+    $("tags").value = (d.tags || []).join(", ");
+    $("metaresult").textContent = JSON.stringify(d, null, 2);
+  } catch(e) {
+    alert(e.message);
+  } finally {
+    $("generate").disabled = false;
+    $("generate").textContent = "✦ Generate title & description";
+  }
+};
+
+/* SCENE PLANNER */
+$("scenes").onclick = async () => {
+  try {
+    $("scenes").disabled = true;
+    $("scenes").textContent = "Creating scene plan...";
+
+    const d = await api("/api/scenes", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        script:$("script").value,
+        target_minutes:+$("minutes").value
+      })
+    });
+
+    $("sceneinfo").textContent =
+      `${d.word_count} words · estimated ${d.estimated_minutes_at_125_wpm} min · ${d.scenes.length} scenes`;
+
+    $("sceneout").textContent = d.scenes.map(s =>
+      `SCENE ${s.scene} · ${s.duration_seconds}s\n` +
+      `${s.narration}\nVISUAL: ${s.visual_prompt}\nIMAGE: ${s.image_file}`
+    ).join("\n\n");
+  } catch(e) {
+    alert(e.message);
+  } finally {
+    $("scenes").disabled = false;
+    $("scenes").textContent = "✦ Create scene plan";
+  }
+};
+
+/* VIDEO RENDER */
+$("render").onclick = async () => {
+  try {
+    $("render").disabled = true;
+    $("render").textContent = "Rendering...";
+    $("renderresult").textContent = "Your video is being rendered. Please wait...";
+
+    const d = await api("/api/render", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        script:$("script").value,
+        target_minutes:+$("minutes").value,
+        image_dir:$("imagedir").value,
+        audio_file:$("audiofile").value,
+        output:$("outfile").value
+      })
+    });
+
+    $("renderresult").textContent = "";
+
+    const message = document.createElement("span");
+    message.className = "success";
+    message.textContent = "Render complete.";
+
+    const br = document.createElement("br");
+    const link = document.createElement("a");
+    link.href = d.download_url;
+    link.textContent = "Download " + d.file;
+
+    const details = document.createElement("div");
+    details.textContent = d.image_count + " images used.";
+
+    $("renderresult").append(message, br, link, details);
+  } catch(e) {
+    $("renderresult").textContent = e.message;
+  } finally {
+    $("render").disabled = false;
+    $("render").textContent = "⚡ Render 1080p video";
+  }
+};
+
+/* YOUTUBE UPLOAD */
+$("upload").onclick = async () => {
+  try {
+    if (!$("video").files[0]) throw Error("Choose a video file first.");
+
+    const f = new FormData();
+    f.append("video", $("video").files[0]);
+    f.append("title", $("title").value);
+    f.append("description", $("description").value);
+    f.append("tags", $("tags").value);
+    f.append("publish_at", $("publish").value);
+
+    if ($("thumbnail").files[0]) {
+      f.append("thumbnail", $("thumbnail").files[0]);
+    }
+
+    $("upload").disabled = true;
+    $("upload").textContent = "Uploading...";
+
+    const d = await api("/api/youtube/upload", {
+      method:"POST",
+      body:f
+    });
+
+    alert(d.message + "\n" + d.url);
+    refresh();
+  } catch(e) {
+    alert(e.message);
+  } finally {
+    $("upload").disabled = false;
+    $("upload").textContent = "Upload / schedule video";
+  }
+};
+
+refresh();
+refresh();
+
+</script>
+<script type="module" src="./auth.js">
+</script>
+<script type="module" src="./firebase.js">
+</script>
+</body>
+</html>
