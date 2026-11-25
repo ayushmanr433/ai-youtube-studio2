@@ -21,6 +21,7 @@ load_dotenv(BASE / ".env")
 
 app = FastAPI(title="AI YouTube Studio", version="0.1.0")
 app.mount("/assets", StaticFiles(directory=str(ASSETS)), name="assets")
+app.mount("/static", StaticFiles(directory=str(BASE / "frontend")), name="static")
 
 class ScriptRequest(BaseModel):
     script: str
