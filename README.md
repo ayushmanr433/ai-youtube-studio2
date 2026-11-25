@@ -62,3 +62,6 @@ The first renderer uses still images with slow zoom/pan (Ken Burns-style) and on
 
 ## Safety and publishing
 The app does not auto-publish without an explicit upload action. Review every script, image, audio track, title and description. Do not reuse another creator's footage, script, thumbnail, or music. AI-generated content is not automatically copyright-free; check each provider's license. Disclose realistic synthetic/altered content when YouTube requires it.
+x
+# ai-youtube-studio2
+This is  ai saas which is used for ai video genration ,audio genration,with automated with youtube so it will be downloaded ,it also provide the dashboard to users
